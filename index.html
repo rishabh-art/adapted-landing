@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AdaptEd Landing Page</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Montserrat', sans-serif; }
+.bg-particles { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
+.section-container { position: relative; z-index: 10; }
+.glass-card { 
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04)); 
+  border:1px solid rgba(255,255,255,0.1); 
+  backdrop-filter: blur(20px) saturate(120%); 
+  border-radius: 16px; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.6s; 
+  opacity: 0; 
+  transform: translateY(20px);
+}
+.glass-card.visible { opacity: 1; transform: translateY(0); }
+.glass-card:hover { transform: scale(1.05) rotateZ(1deg); box-shadow:0 20px 40px rgba(0,0,0,0.4);}
+.badge-anim { animation:hueShift 4s linear infinite; display:inline-block; margin-right:4px; padding:2px 6px; border-radius:6px; font-size:0.75rem; background:rgba(79,70,229,0.3); }
+@keyframes hueShift { 0% {filter:hue-rotate(0deg);} 50% {filter:hue-rotate(20deg);} 100% {filter:hue-rotate(0deg);} }
+.shake { animation:shake 0.7s ease-in-out infinite; }
+@keyframes shake {0%{transform:translateX(0);}25%{transform:translateX(-3px);}50%{transform:translateX(3px);}75%{transform:translateX(-2px);}100%{transform:translateX(0);} }
+.modal-bg { backdrop-filter: blur(8px); background: rgba(0,0,0,0.5); }
+.toast { position: fixed; right: 20px; bottom: 26px; z-index: 60; background: linear-gradient(90deg,#4f46e5,#7c3aed); color:white; padding:10px 14px; border-radius:10px; box-shadow:0 12px 40px rgba(20,20,60,0.4); display:none; }
+.toast.show { display:block; }
+.ed-gradient { 
+  background: linear-gradient(90deg, #7c3aed, #4f46e5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display:inline-block;
+  animation: hueShift 6s linear infinite;
+}
+.founder-circle { 
+  width:80px; height:80px; border-radius:50%; margin:0 auto 10px; 
+  background: radial-gradient(circle, rgba(124,62,237,0.6), rgba(79,70,229,0.4));
+  display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:bold;
+  animation: pulseCircle 2s ease-in-out infinite alternate;
+}
+@keyframes pulseCircle { 0%{transform: scale(1);} 100%{transform: scale(1.1);} }
+</style>
+</head>
+<body class="bg-gradient-to-br from-indigo-950 via-indigo-800 to-indigo-900 text-white overflow-x-hidden">
+
+<!-- Particle Background -->
+<div id="tsparticles" class="bg-particles"></div>
+
+<!-- Hero Section -->
+<section class="section-container min-h-screen flex flex-col justify-center items-center text-center px-6">
+  <h1 class="text-6xl font-extrabold">Adapt<span class="ed-gradient">Ed.</span></h1>
+  <p class="mt-6 text-xl" id="typed"></p>
+  <button class="mt-12 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 rounded-lg shake" onclick="document.getElementById('roles').scrollIntoView({behavior:'smooth'})">We're Recruiting</button>
+</section>
+
+<!-- Roles Section -->
+<section id="roles" class="section-container py-20 px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></section>
+
+<!-- Founders Section -->
+<section class="section-container py-20 px-6 grid grid-cols-1 md:grid-cols-3 gap-6" id="founders"></section>
+
+<!-- Why Section -->
+<section class="section-container py-20 px-6 text-center">
+  <h2 class="text-3xl font-bold mb-4">Why we're building AdaptEd</h2>
+  <p class="text-lg max-w-2xl mx-auto">We're building a platform where learning adapts to each student — not the other way round.</p>
+</section>
+
+<!-- Footer -->
+<footer class="section-container py-6 text-center border-t border-white/10">Built by students for students</footer>
+
+<!-- Modal -->
+<div id="modal" class="fixed inset-0 hidden z-50 flex items-center justify-center">
+  <div class="absolute inset-0 modal-bg"></div>
+  <div class="relative w-full max-w-2xl p-6">
+    <div class="glass-card rounded-xl p-6 max-h-[80vh] overflow-y-auto mx-auto">
+      <div class="flex items-start justify-between gap-4">
+        <h4 class="text-xl font-semibold" id="modalTitle">Apply</h4>
+        <button class="px-3 py-2 rounded bg-white/5" onclick="closeModal()">Close</button>
+      </div>
+      <form id="applyForm" class="mt-4 space-y-3">
+        <input type="hidden" name="_next" value="https://adapted.techwell.biz/thanks.html">
+        <input type="hidden" name="_captcha" value="false">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <input name="Name" placeholder="Name" class="w-full p-3 rounded bg-white/20 text-black border border-white/10" required />
+          <input name="Email" type="email" placeholder="Email" class="w-full p-3 rounded bg-white/20 text-black border border-white/10" required />
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <input name="Phone" placeholder="Phone" class="w-full p-3 rounded bg-white/20 text-black border border-white/10" required />
+          <select name="Role" class="w-full p-3 rounded bg-white/20 text-black border border-white/10" required></select>
+        </div>
+        <input name="Why" placeholder="Why you’re applying (short)" class="w-full p-3 rounded bg-white/20 text-black border border-white/10" required />
+        <textarea name="Pitch" placeholder="Your pitch" class="w-full p-3 rounded bg-white/20 text-black border border-white/10 h-32" required></textarea>
+        <input name="LinkedIn" placeholder="LinkedIn (optional)" class="w-full p-3 rounded bg-white/20 text-black border border-white/10" />
+        <div class="flex gap-3 mt-4">
+          <button type="button" class="px-4 py-2 bg-indigo-600 rounded hover:bg-indigo-500" onclick="saveDraft()">Save</button>
+          <button type="submit" class="px-4 py-2 bg-green-600 rounded hover:bg-green-500">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+// Typed vision animation (multi-sentence)
+const sentences = [
+  "Vision: To be the world's most personalised edtech platform",
+  "Learning that adapts to each student — not the other way round",
+  "Experience-first roles, high-impact team, huge opportunities"
+];
+let sentenceIdx = 0;
+let charIdx = 0;
+const typedElement = document.getElementById('typed');
+const typingSpeed = 28;
+const pauseBetween = 2000;
+
+function typeSentence() {
+  if(charIdx <= sentences[sentenceIdx].length){
+    typedElement.innerText = sentences[sentenceIdx].slice(0,charIdx);
+    charIdx++;
+    setTimeout(typeSentence, typingSpeed);
+  } else {
+    setTimeout(() => { deleteSentence(); }, pauseBetween);
+  }
+}
+function deleteSentence() {
+  if(charIdx >= 0){
+    typedElement.innerText = sentences[sentenceIdx].slice(0,charIdx);
+    charIdx--;
+    setTimeout(deleteSentence, 12);
+  } else {
+    sentenceIdx = (sentenceIdx + 1) % sentences.length;
+    setTimeout(typeSentence, typingSpeed);
+  }
+}
+typeSentence();
+
+// Roles
+const roles = [
+  {key:'ai',title:'🤖 AI/ML Engineer',badges:['Innovative','Technical']},
+  {key:'backend',title:'🧑‍💻 Backend developer',badges:['Reliable','Logical']},
+  {key:'frontend',title:'🎨 Frontend developer',badges:['Creative','UI/UX']},
+  {key:'fullstack',title:'🛠️ Full stack developer',badges:['Versatile','Problem Solver']},
+  {key:'academic',title:'📚 Academic content producer',badges:['Thoughtful','Structured']},
+  {key:'creative',title:'🖌️ Creative content producer',badges:['Dynamic','Visual']},
+  {key:'qc',title:'✅ Academic content quality check',badges:['Strict','Thorough']},
+  {key:'marketing',title:'📢 Marketing media manager',badges:['Thorough','Strategic']},
+  {key:'partnerships',title:'🤝 Strategic partnerships manager',badges:['Thorough','Connector']},
+  {key:'hr',title:'🧑‍💼 HR Manager',badges:['Thorough','Supportive']},
+  {key:'other',title:'🌟 Other — propose a role',badges:['Flexible','Innovative']}
+];
+
+const rolesContainer = document.getElementById('roles');
+const roleSelect = document.querySelector('select[name="Role"]');
+
+roles.forEach(r => {
+  const div = document.createElement('div');
+  div.className = 'glass-card p-6 cursor-pointer';
+  div.innerHTML = `<h3 class='text-lg font-semibold mb-2'>${r.title}</h3>${r.badges.map(b=>`<span class='badge-anim'>${b}</span>`).join('')}`;
+  div.onclick = ()=>openModal(r.title);
+  rolesContainer.appendChild(div);
+
+  const opt = document.createElement('option'); opt.value = r.title; opt.innerText = r.title;
+  roleSelect.appendChild(opt);
+});
+
+// Founders
+const foundersContainer = document.getElementById('founders');
+const founders = [
+  {initials:'RP',name:'Rishabh Pal, Operations Coordinator'},
+  {initials:'AC',name:'Aahaann Chavan, Product Coordinator'},
+  {initials:'AS',name:'Arnav Saxena, Brand Coordinator'}
+];
+founders.forEach(f=>{
+  const div = document.createElement('div');
+  div.className='glass-card p-6 text-center';
+  div.innerHTML = `<div class="founder-circle">${f.initials}</div><p class='font-semibold'>${f.name}</p>`;
+  foundersContainer.appendChild(div);
+});
+
+// Scroll animation
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){ entry.target.classList.add('visible'); }
+  });
+},{threshold:0.1});
+document.querySelectorAll('.glass-card').forEach(card=>observer.observe(card));
+
+// Modal functions
+const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modalTitle');
+const form = document.getElementById('applyForm');
+
+function openModal(role){
+  modalTitle.innerText = `Apply — ${role}`;
+  form['Role'].value = role;
+  modal.classList.remove('hidden');
+  document.documentElement.style.overflow='hidden';
+}
+function closeModal(){
+  modal.classList.add('hidden');
+  document.documentElement.style.overflow='';
+}
+function saveDraft(){
+  const data={}; [...form.elements].forEach(e=>{if(e.name)data[e.name]=e.value;});
+  localStorage.setItem('adapted_draft_final',JSON.stringify(data));
+  showToast('Saved locally');
+}
+form.onsubmit=function(e){
+  e.preventDefault();
+  const action='https://formsubmit.co/palrishabh783@gmail.com';
+  const payload={}; [...form.elements].forEach(el=>{if(el.name)payload[el.name]=el.value;});
+  const html=`<form id=fs method=post action='${action}'>${Object.keys(payload).map(k=>`<input name='${k}' value='${payload[k]}'/>`).join('')}</form><script>document.getElementById('fs').submit();<\/script>`;
+  const w=window.open(); if(!w){ alert('Popup blocked'); return; }
+  w.document.write(html); w.document.close();
+  localStorage.removeItem('adapted_draft_final'); showToast('Submitted — check your email'); closeModal();
+};
+
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>{t.classList.remove('show');},2200); }
+
+// tsParticles
+tsParticles.load("tsparticles", {
+  fpsLimit: 60,
+  particles: {
+    number: { value: 80, density: { enable:true, area:800 } },
+    color: { value:"#7c3aed" },
+    shape: { type:"circle" },
+    opacity: { value:0.4, random:true },
+    size: { value:2, random:true },
+    links: { enable:true, distance:120, color:"#4f46e5", opacity:0.2, width:1 },
+    move: { enable:true, speed:1, direction:"none", random:true, outModes:"bounce" }
+  },
+  interactivity: { events: { onHover:{ enable:true, mode:"repulse" }, resize:true } },
+  detectRetina:true
+});
+</script>
+
+</body>
+</html>

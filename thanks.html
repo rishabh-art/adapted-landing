@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Thank You — AdaptEd</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Montserrat', sans-serif; }
+.bg-particles { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
+.section-container { position: relative; z-index: 10; }
+.glass-card { 
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04)); 
+  border:1px solid rgba(255,255,255,0.1); 
+  backdrop-filter: blur(20px) saturate(120%); 
+  border-radius: 16px; 
+  padding: 3rem; 
+  max-width:600px; 
+  text-align:center;
+  margin: 0 auto;
+  animation:fadeIn 1s ease forwards, floatCard 4s ease-in-out infinite alternate;
+  opacity:0;
+}
+@keyframes fadeIn { to { opacity:1; } }
+@keyframes floatCard { 0%{transform:translateY(0px);} 100%{transform:translateY(-8px);} }
+
+.ed-gradient { 
+  background: linear-gradient(90deg, #a78bfa, #4f46e5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 6px rgba(255,255,255,0.2);
+  font-weight: 900;
+  font-size: 1.5rem;
+  display: inline-block;
+  animation: hueShift 6s linear infinite;
+}
+@keyframes hueShift { 0% {filter:hue-rotate(0deg);} 50% {filter:hue-rotate(30deg);} 100% {filter:hue-rotate(0deg);} }
+
+button { transition: transform 0.2s; }
+button:hover { transform: scale(1.05); }
+</style>
+</head>
+<body class="bg-gradient-to-br from-indigo-950 via-indigo-800 to-indigo-900 text-white overflow-x-hidden">
+
+<!-- Particle Background -->
+<div id="tsparticles" class="bg-particles"></div>
+
+<section class="section-container min-h-screen flex flex-col justify-center items-center text-center px-6">
+  <h1 class="text-6xl font-extrabold mb-6">Thank You!</h1>
+  <div class="glass-card">
+    <p class="text-xl mb-4">Thank you for signing up to join AdaptEd.</p>
+    <p class="text-lg">We’ll reach out if you’re shortlisted. Stay excited and keep building!</p>
+    <p class="mt-6 font-semibold"><span class="ed-gradient">AdaptEd</span></p>
+    <button class="mt-8 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 rounded-lg" onclick="window.location.href='index.html'">Back to Home</button>
+  </div>
+</section>
+
+<script>
+// tsParticles
+tsParticles.load("tsparticles", {
+  fpsLimit: 60,
+  particles: {
+    number: { value: 80, density: { enable:true, area:800 } },
+    color: { value:"#7c3aed" },
+    shape: { type:"circle" },
+    opacity: { value:0.4, random:true },
+    size: { value:2, random:true },
+    links: { enable:true, distance:120, color:"#4f46e5", opacity:0.2, width:1 },
+    move: { enable:true, speed:1, direction:"none", random:true, outModes:"bounce" }
+  },
+  interactivity: { events: { onHover:{ enable:true, mode:"repulse" }, resize:true } },
+  detectRetina:true
+});
+</script>
+
+</body>
+</html>
