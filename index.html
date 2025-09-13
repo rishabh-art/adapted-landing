@@ -213,7 +213,7 @@ function saveDraft(){
 }
 form.onsubmit=function(e){
   e.preventDefault();
-  const action='https://formsubmit.co/palrishabh783@gmail.com';
+  const action='https://formsubmit.co/6d79e85254f220adece3092241ddb540';
   const payload={}; [...form.elements].forEach(el=>{if(el.name)payload[el.name]=el.value;});
   const html=`<form id=fs method=post action='${action}'>${Object.keys(payload).map(k=>`<input name='${k}' value='${payload[k]}'/>`).join('')}</form><script>document.getElementById('fs').submit();<\/script>`;
   const w=window.open(); if(!w){ alert('Popup blocked'); return; }
@@ -242,3 +242,4 @@ tsParticles.load("tsparticles", {
 
 </body>
 </html>
+
