@@ -125,54 +125,56 @@
     <script>
         // --- CONFIGURATION ---
         // Replace these with your actual Supabase details
-        const SUPABASE_URL = 'https://wuxfvidrbtdzuianmdyi.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_jGPRckaHX7c40WsFG1rPiw_tl5oyBTf';
-        
-        let supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        const form = document.getElementById('applicationForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const statusMsg = document.getElementById('statusMessage');
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        (function() {
+            const SUPABASE_URL = 'https://wuxfvidrbtdzuianmdyi.supabase.co';
+            const SUPABASE_KEY = 'sb_publishable_jGPRckaHX7c40WsFG1rPiw_tl5oyBTf';
             
-            // 1. Lock UI
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="animate-pulse">Sending...</span>';
-            statusMsg.classList.add('hidden');
+            const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-            const name = document.getElementById('name').value;
-            const role = document.getElementById('role').value;
-            const pitch = document.getElementById('pitch').value;
+            const form = document.getElementById('applicationForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const statusMsg = document.getElementById('statusMessage');
 
-            // 2. Submit to Supabase
-            const { data, error } = await supabase
-                .from('applications')
-                .insert([
-                    { 
-                        name: name, 
-                        role: role,
-                        pitch: pitch 
-                    }
-                ]);
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // 1. Lock UI
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="animate-pulse">Sending...</span>';
+                statusMsg.classList.add('hidden');
 
-            // 3. Handle Response
-            if (error) {
-                console.error('Supabase Error:', error);
-                statusMsg.textContent = "Error: " + error.message;
-                statusMsg.className = "mt-6 text-center text-sm font-medium text-red-500 block";
-                submitBtn.innerHTML = 'Try Again';
-                submitBtn.disabled = false;
-            } else {
-                statusMsg.innerHTML = "Received. <br/>We will fix the memory gap together.";
-                statusMsg.className = "mt-6 text-center text-sm font-medium text-brand-accent block";
-                submitBtn.innerHTML = 'Application Sent';
-                submitBtn.classList.add('bg-gray-800', 'text-gray-500', 'cursor-not-allowed');
-                submitBtn.classList.remove('bg-brand-accent', 'hover:bg-brand-accentHover', 'text-brand-dark');
-                form.reset();
-            }
-        });
+                const name = document.getElementById('name').value;
+                const role = document.getElementById('role').value;
+                const pitch = document.getElementById('pitch').value;
+
+                // 2. Submit to Supabase
+                const { data, error } = await supabaseClient
+                    .from('applications')
+                    .insert([
+                        { 
+                            name: name, 
+                            role: role,
+                            pitch: pitch 
+                        }
+                    ]);
+
+                // 3. Handle Response
+                if (error) {
+                    console.error('Supabase Error:', error);
+                    statusMsg.textContent = "Error: " + error.message;
+                    statusMsg.className = "mt-6 text-center text-sm font-medium text-red-500 block";
+                    submitBtn.innerHTML = 'Try Again';
+                    submitBtn.disabled = false;
+                } else {
+                    statusMsg.innerHTML = "Received. <br/>We will fix the memory gap together.";
+                    statusMsg.className = "mt-6 text-center text-sm font-medium text-brand-accent block";
+                    submitBtn.innerHTML = 'Application Sent';
+                    submitBtn.classList.add('bg-gray-800', 'text-gray-500', 'cursor-not-allowed');
+                    submitBtn.classList.remove('bg-brand-accent', 'hover:bg-brand-accentHover', 'text-brand-dark');
+                    form.reset();
+                }
+            });
+        })();
     </script>
 </body>
 </html>
