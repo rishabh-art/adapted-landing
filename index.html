@@ -88,6 +88,12 @@
                 </div>
 
                 <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Email Address</label>
+                    <input type="email" id="email" required placeholder="your.email@example.com" 
+                        class="w-full bg-black/20 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-accent focus:bg-brand-dark/50 transition">
+                </div>
+
+                <div>
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Role</label>
                     <div class="relative">
                         <select id="role" required class="w-full bg-black/20 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent focus:bg-brand-dark/50 appearance-none transition cursor-pointer">
@@ -107,6 +113,12 @@
                     <textarea id="pitch" required rows="4" placeholder="Tell us your story..." 
                         class="w-full bg-black/20 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-accent focus:bg-brand-dark/50 transition resize-none"></textarea>
                 </div>
+
+                <div class="flex items-start gap-3 pt-2">
+                    <input type="checkbox" id="agree" class="mt-1 w-4 h-4 bg-black/20 border border-gray-700 rounded cursor-pointer accent-brand-accent">
+                    <label for="agree" class="text-sm text-gray-400 cursor-pointer">I agree to be contacted by AdaptEd<span class="text-brand-accent">™</span></label>
+                </div>
+                <div id="agreementError" class="text-xs font-medium text-red-500 hidden mt-2">Please check this field to continue</div>
 
                 <button type="submit" id="submitBtn" class="w-full mt-4 bg-brand-accent hover:bg-brand-accentHover text-brand-dark font-bold py-4 rounded-lg transition-all duration-200 transform active:scale-[0.98]">
                     Send Application
@@ -146,6 +158,18 @@
                 const name = document.getElementById('name').value;
                 const role = document.getElementById('role').value;
                 const pitch = document.getElementById('pitch').value;
+                const email = document.getElementById('email').value;
+                const agree = document.getElementById('agree').checked;
+                const agreementError = document.getElementById('agreementError');
+
+                // Check if agreement checkbox is checked
+                if (!agree) {
+                    agreementError.classList.remove('hidden');
+                    submitBtn.innerHTML = 'Send Application';
+                    submitBtn.disabled = false;
+                    return;
+                }
+                agreementError.classList.add('hidden');
 
                 // 2. Submit to Supabase
                 const { data, error } = await supabaseClient
@@ -154,7 +178,8 @@
                         { 
                             name: name, 
                             role: role,
-                            pitch: pitch 
+                            pitch: pitch,
+                            email: email
                         }
                     ]);
 
